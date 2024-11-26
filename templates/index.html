@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Transcript Summarizer</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">
+                YouTube Transcript Summarizer
+            </h1>
+            
+            <form method="POST" class="mb-8">
+                <div class="flex gap-4">
+                    <input 
+                        type="text" 
+                        name="url" 
+                        placeholder="Enter YouTube URL" 
+                        class="flex-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    >
+                    <button 
+                        type="submit" 
+                        class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
+                    >
+                        Summarize
+                    </button>
+                </div>
+            </form>
+
+            {% if error %}
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-8" role="alert">
+                <p>{{ error }}</p>
+            </div>
+            {% endif %}
+
+            {% if video_id %}
+            <div class="mb-8">
+                <div class="aspect-w-16 aspect-h-9">
+                    <iframe 
+                        class="w-full h-96 rounded-lg shadow-lg"
+                        src="https://www.youtube.com/embed/{{ video_id }}"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if summary %}
+            <div class="bg-white rounded-lg shadow-lg p-6 space-y-6">
+                <div>
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-800">Summary</h2>
+                    <div class="prose max-w-none text-gray-700">
+                        {{ summary }}
+                    </div>
+                </div>
+                
+                {% if key_points %}
+                <div>
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-800">Key Points</h2>
+                    <ul class="list-disc pl-6 space-y-2 text-gray-700">
+                        {% for point in key_points %}
+                        <li>{{ point }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+    
